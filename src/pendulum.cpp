@@ -1,6 +1,8 @@
 #include "pendulum.h"
 
 Pendulum::Pendulum(int w, int h){
+    _width = w;
+    _height = h;
 
 }
 

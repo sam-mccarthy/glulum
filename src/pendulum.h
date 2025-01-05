@@ -9,14 +9,14 @@ public:
     std::unique_ptr<unsigned char> step(double delta_t);
     
 private:
-    int width;
-    int height;
+    int _width;
+    int _height;
 
-    double* theta_1;
-    double* d_theta_1;
-    double* dd_theta_1;
+    double* _theta_1;
+    double* _d_theta_1;
+    double* _dd_theta_1;
 
-    double* theta_2;
-    double* d_theta_2;
-    double* dd_theta_2;
+    double* _theta_2;
+    double* _d_theta_2;
+    double* _dd_theta_2;
 };
