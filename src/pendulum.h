@@ -14,14 +14,21 @@ struct Parameters {
     double step_size;
 };
 
+struct State {
+    double theta_1;
+    double theta_2;
+    double omega_1;
+    double omega_2;
+};
+
 class Pendulum {
 public:
     Pendulum(int w, int h, Parameters p);
     ~Pendulum();
-    std::pair<double, double> calculate_dd(double t1, double t2, double v1, double v2);
-    std::pair<double, double> calculate_d(double t1, double t2, double v1, double v2);
     std::unique_ptr<unsigned char> step(double delta_t);
 private:
+    State calculate_step(double t1, double t2, double v1, double v2);
+
     int _width;
     int _height;
 
@@ -29,9 +36,7 @@ private:
 
     double* _theta_1;
     double* _d_theta_1;
-    double* _dd_theta_1;
 
     double* _theta_2;
     double* _d_theta_2;
-    double* _dd_theta_2;
 };
