@@ -9,16 +9,16 @@ Pendulum::Pendulum(int w, int h, Parameters p){
     _theta_1 = new double[_width * _height];
     _theta_2 = new double[_width * _height];
 
-    _d_theta_1 = new double[_width * _height];
-    _d_theta_2 = new double[_width * _height];
+    _omega_1 = new double[_width * _height];
+    _omega_2 = new double[_width * _height];
 }
 
 Pendulum::~Pendulum(){
     delete _theta_1;
     delete _theta_2;
 
-    delete _d_theta_1;
-    delete _d_theta_2;
+    delete _omega_1;
+    delete _omega_2;
 }
 
 State Pendulum::calculate_step(double t1, double t2, double v1, double v2){
@@ -69,9 +69,29 @@ State Pendulum::calculate_step(double t1, double t2, double v1, double v2){
     return result;
 }
 
-std::unique_ptr<unsigned char> Pendulum::step(double delta_t){
+void Pendulum::step(SDL_Surface* surface){
     for(int x = 0; x < _width; x++){
         for(int y = 0; y < _height; y++){
+            int index = y * _width + x;
+            State result = calculate_step(_theta_1[index], _theta_2[index], _omega_1[index], _omega_2[index]);
+
+            _theta_1[index] = result.theta_1;
+            _theta_2[index] = result.theta_2;
+            _omega_1[index] = result.omega_1;
+            _omega_2[index] = result.omega_2;
+
+            unsigned char r = 255 * (_theta_1[index] / M_2_PI + 0.5);
+            unsigned char g = 255 * (_theta_2[index] / M_2_PI + 0.5);
+            unsigned char b = 255;
+
+            SDL_LockSurface(surface);
+            uint32_t* const pixel = (uint32_t*)((uint8_t) surface->pixels + y * surface->pitch + x * surface->format->BytesPerPixel);
+            pixel[0] = b;
+            pixel[1] = g;
+            pixel[2] = r;
+            pixel[3] = 255;
+            SDL_UnlockSurface(surface);
         }
     }
 }
+

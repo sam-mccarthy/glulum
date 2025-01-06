@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <SDL.h>
 
 struct Parameters {
     double gravity;
@@ -25,7 +26,7 @@ class Pendulum {
 public:
     Pendulum(int w, int h, Parameters p);
     ~Pendulum();
-    std::unique_ptr<unsigned char> step(double delta_t);
+    void step(SDL_Surface* surface);
 private:
     State calculate_step(double t1, double t2, double v1, double v2);
 
@@ -35,8 +36,8 @@ private:
     Parameters _params;
 
     double* _theta_1;
-    double* _d_theta_1;
+    double* _omega_1;
 
     double* _theta_2;
-    double* _d_theta_2;
+    double* _omega_2;
 };
